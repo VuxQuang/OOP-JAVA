@@ -1,0 +1,32 @@
+public void themThiSinhVaoTable(ThiSinh ts) {
+		DefaultTableModel model_table = (DefaultTableModel) table.getModel();
+		model_table.addRow(new Object[] { ts.getMaThiSinh() + "", ts.getTenThiSinh(), ts.getQueQuan().getTenTinh(),
+				ts.getNgaySinh().getDate() + "/" + (ts.getNgaySinh().getMonth() + 1) + "/"
+						+ (ts.getNgaySinh().getYear() + 1900),
+				(ts.isGioiTinh() ? "Nam" : "Nữ"), ts.getDiemMon1() + "", ts.getDiemMon2() + "",
+				ts.getDiemMon3() + "", });
+	}
+
+	public void themHoacCapNhatThiSinh(ThiSinh ts) {
+		DefaultTableModel model_table = (DefaultTableModel) table.getModel();
+		if (!this.model.kiemTraTonTai(ts)) {
+			this.model.insert(ts);
+			this.themThiSinhVaoTable(ts);
+		} else {
+			this.model.update(ts);
+			int soLuongDong = model_table.getRowCount();
+			for (int i = 0; i < soLuongDong; i++) {
+				String id = model_table.getValueAt(i, 0) + "";
+				if (id.equals(ts.getMaThiSinh() + "")) {
+					model_table.setValueAt(ts.getMaThiSinh() + "", i, 0);
+					model_table.setValueAt(ts.getTenThiSinh() + "", i, 1);
+					model_table.setValueAt(ts.getQueQuan().getTenTinh() + "", i, 2);
+					model_table.setValueAt(ts.getNgaySinh().getDate() + "/" + (ts.getNgaySinh().getMonth() + 1) + "/"
+							+ (ts.getNgaySinh().getYear() + 1900) + "", i, 3);
+					model_table.setValueAt((ts.isGioiTinh() ? "Nam" : "Nữ"), i, 4);
+					model_table.setValueAt(ts.getDiemMon1() + "", i, 5);
+					model_table.setValueAt(ts.getDiemMon2() + "", i, 6);
+					model_table.setValueAt(ts.getDiemMon3() + "", i, 7);
+				}
+			}
+		}
